@@ -1,5 +1,5 @@
 //var ollBtn = document.getElementById("oll");
-//var pllBtn = document.getElementById("pll");
+var pllBtn = document.getElementById("pll");
 
 var version = "0.0.2";
 
@@ -100,8 +100,8 @@ function loadAlgsPLL(names, algors, images, rotations) {
     for (i = 0; i < algors.length; i += 3) {
         // Number 1
 
-        var algDuo = document.createElement("div");
-        algDuo.classList.add("algDuo");
+        // var algDuo = document.createElement("div");
+        // algDuo.classList.add("algDuo");
 
         var algDiv = document.createElement("div");
         algDiv.classList.add("alg");
@@ -158,7 +158,7 @@ function loadAlgsPLL(names, algors, images, rotations) {
 
         algDiv.appendChild(rightAlg);
 
-        algDuo.appendChild(algDiv);
+        algs.appendChild(algDiv);
 
         // Number 2
 
@@ -218,7 +218,7 @@ function loadAlgsPLL(names, algors, images, rotations) {
 
             algDiv.appendChild(rightAlg);
 
-            algDuo.appendChild(algDiv);
+            algs.appendChild(algDiv);
         }
 
         // Number 3
@@ -279,10 +279,10 @@ function loadAlgsPLL(names, algors, images, rotations) {
 
             algDiv.appendChild(rightAlg);
 
-            algDuo.appendChild(algDiv);
+            algs.appendChild(algDiv);
         }
 
-        algs.appendChild(algDuo);
+        // algs.appendChild(algDuo);
     }
 }
 
