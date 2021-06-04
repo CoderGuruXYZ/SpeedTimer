@@ -1,12 +1,14 @@
 // Main Vars
 var plus2 = ['altKey', "2"];
 var dnf = ['altKey', "d"];
+var remove = ['altKey', "z"];
+var clear = ['esc'];
 
 let plus2col = 'orange';
 let dnfcol = 'red';
 
-
 if (localStorage.bgimg) document.querySelector(".right").style.backgroundImage = "url(" + localStorage.bgimg + ")";
+if (localStorage.buttonbg != null) document.body.style.setProperty("--buttonbg", localStorage.buttonbg);
 
 var sType;
 
@@ -299,8 +301,8 @@ function reset() {
 }
 
 function increment() {
-	if (running == 1) {
-		setTimeout(function () {
+	setTimeout(function () {
+		if (running == 1) {
 			time++;
 			var mins = Math.floor(time / 100 / 60);
 			if (mins <= 9) {
@@ -318,8 +320,8 @@ function increment() {
 
 			timer.innerHTML = mins + ":" + secs + "." + hundredths;
 			increment();
-		}, 10);
-	}
+		}
+	}, 10);
 }
 
 document.body.onkeydown = function (e) {
@@ -352,21 +354,32 @@ document.body.onkeydown = function (e) {
 		generateTimes();
 		generateStats();
 	}
-
-	if (e.keyCode == 32) {
+	if (e[remove[0]] && e.key == remove[1]) {
+		e.preventDefault();
+		deleteSolve();
+		generateTimes();
+		generateStats();
+	}
+	if (e.keyCode == 32 && timer.nodeName == "BUTTON") {
 		timer.style.color = "lightgreen";
+	}
+	if (e.key == "Escape") {
+		document.querySelector(".digits").innerHTML = "00:00.00";
 	}
 }
 
 document.body.onkeyup = function (e) {
-	timer.style.color = "white";
-	if (e.keyCode == 32 && running == 0) {
-		start();
-	} else if (running == 1) {
-		running = 0;
-		getTime();
-		localStorage.setItem("speedtimer", JSON.stringify(sessions));
-		generateScramble(sType);
+	if (timer.nodeName == "BUTTON") {
+		timer.style.color = "white";
+		if (e.keyCode == 32 && running == 0) {
+			start();
+		} else if (running == 1) {
+			running = 0;
+			getTime();
+			localStorage.setItem("speedtimer", JSON.stringify(sessions));
+			generateScramble(sType);
+			timer.style.color = "white";
+		}
 	}
 }
 
@@ -374,6 +387,11 @@ function start() {
 	reset();
 	running = 1;
 	increment();
+}
+
+function enter() {
+	let input = document.querySelector("input.digits");
+	input.value = input.value.replace(/[^0-9:.+DNFdnf]/g,'');
 }
 
 // Useful Functions
@@ -415,14 +433,22 @@ function format(time) {
 	//return time;
 }
 
+// document.querySelector(".type").onclick = e => {
+// 	let type = document.querySelector(".type");
+// 	type.blur();
+// 	document.querySelector(".digits").outerHTML = type.textContent == "⌨️" ? '<input class="digits" onkeyup="enter()"></input>' : `<button disabled="disabled" class="digits" style="font-size: ${localStorage.digitSize}vh;">00:00.00</button>`;
+// 	type.innerHTML = type.textContent == "⌨️" ? "⏱" : "⌨️";
+// 	timer = document.querySelector(".digits");
+// }
+
 // Sessions
 
 function getTime() {
 	var timeFinish = timer.innerHTML.slice(0, 2) + timer.innerHTML.slice(3, 5);
 	if (timer.innerHTML.slice(6, 7) == "0") {
-		timeFinish = timeFinish + "0" + (parseInt(timer.innerHTML.slice(6, 8)) + 1).toString();
+		timeFinish = timeFinish + "0" + (parseInt(timer.innerHTML.slice(6, 8))).toString();
 	} else {
-		timeFinish = timeFinish + (parseInt(timer.innerHTML.slice(6, 8)) + 1).toString();
+		timeFinish = timeFinish + (parseInt(timer.innerHTML.slice(6, 8))).toString();
 	}
 	var timeofSolve = timeFinish.toString();
 
@@ -451,7 +477,7 @@ function generateTimes() {
 		index.classList.add("index");
 		index.innerHTML = (sessions[currentSessionIdx].times.length - i).toString() + ".&nbsp;";
 
-		var time = document.createElement("div");
+		let time = document.createElement("div");
 		time.classList.add("time");
 		if (sessions[currentSessionIdx].times[i].slice(-1) == "+") {
 			time.style.color = plus2col;
@@ -490,113 +516,6 @@ function generateTimes() {
 }
 
 
-// function generateStats() {
-// 	var best = document.querySelector(".bestTime");
-// 	var avg = document.getElementById("avg");
-// 	var worst = document.getElementById("worst");
-// 	var ao5 = document.getElementById("ao5");
-// 	var ao12 = document.getElementById("ao12");
-// 	var ao100 = document.getElementById("ao100");
-// 	var range = document.getElementById("range");
-
-// 	Array.min = function (array) {
-// 		return Math.min.apply(Math, array);
-// 	};
-
-// 	Array.max = function (array) {
-// 		return Math.max.apply(Math, array);
-// 	};
-
-// 	// sessions[currentSessionIdx].times = [];
-// 	// for (time of sessions[currentSessionIdx].times) {
-// 	// 	if (time.includes("DNF")) sessions[currentSessionIdx].times.push("DNF");
-// 	// 	else sessions[currentSessionIdx].times.push(time.replace("+", ""));
-// 	// }
-
-// 	//Default
-
-// 	if (sessions[currentSessionIdx].times == 0) {
-// 		best.innerHTML = "-";
-// 		avg.innerHTML = "-";
-// 		worst.innerHTML = "-";
-// 		ao5.innerHTML = "-";
-// 		ao12.innerHTML = "-";
-// 		ao100.innerHTML = "-";
-// 		range.innerHTML = "-";
-// 	} else {
-
-// 		// Best
-
-// 		best.innerHTML = format(Math.min(sessions[currentSessionIdx].times))//(...sessions[currentSessionIdx].times.filter(e => !isNaN(parseInt(e))));
-
-// 		// Avg
-
-// 		var total = 0;
-// 		var avgTemp = 0;
-// 		var len = 0;
-// 		// for (let time of sessions[currentSessionIdx].times) {
-// 		// 	if (!isNaN(parseInt(time))) {
-// 		// 		total += parseInt(time);
-// 		// 		len++;
-// 		// 	}
-// 		// }
-// 		for (i = 0; i < sessions[currentSessionIdx].times.length; i++) {
-// 			if (!isNaN(parseInt(time))) {
-// 				total += parseInt(time);
-// 				len++;
-// 			}
-// 		}
-// 		avg.innerHTML = format(Math.round(total / len));
-
-// 		// Worst
-
-// 		worst.innerHTML = format(Math.max.apply(Math, sessions[currentSessionIdx].times))
-// 		//worst.innerHTML = format(Math.max(sessions[currentSessionIdx].times))// (...sessions[currentSessionIdx].times.filter(e => !isNaN(parseInt(e))));
-
-// 		// Range
-
-// 		if (sessions[currentSessionIdx].times.length > 1) {
-// 			range.innerHTML = format(Math.round(parseFloat(worst.innerHTML) * 100 - parseFloat(best.innerHTML) * 100));
-// 		} else {
-// 			ao5.innerHTML = "-";
-// 			ao12.innerHTML = "-";
-// 			ao100.innerHTML = "-";
-// 			range.innerHTML = "-";
-// 		}
-
-// 		// ao5
-
-// 		average = ao(5);
-// 		if (average) {
-// 			ao5.innerHTML = format(average);
-// 		} else {
-// 			ao5.innerHTML = "-";
-// 			ao12.innerHTML = "-";
-// 			ao100.innerHTML = "-";
-// 		}
-
-// 		// ao12
-
-// 		average = ao(12);
-// 		if (average) {
-// 			ao12.innerHTML = format(average);
-// 		}
-// 		else {
-// 			ao12.innerHTML = "-";
-// 			ao100.innerHTML = "-";
-// 		}
-
-// 		// ao100
-
-// 		average = ao(100);
-// 		if (average) {
-// 			ao100.innerHTML = format(average);
-// 		} else {
-// 			ao100.innerHTML = "-";
-// 		}
-// 	}
-// }
-
 function generateStats() {
 	var best = document.querySelector(".bestTime");
 	var avg = document.getElementById("avg");
@@ -614,180 +533,86 @@ function generateStats() {
 		return Math.max.apply(Math, array);
 	};
 
+	times = [];
+	for (time of sessions[currentSessionIdx].times) {
+		if (time.includes("DNF")) times.push("DNF");
+		else times.push(time.replace("+", ""));
+	}
+
 	//Default
 
-	if (sessions[currentSessionIdx].times.length == 0) {
-		best.innerHTML = "-";
-		avg.innerHTML = "-";
-		worst.innerHTML = "-";
-		ao5.innerHTML = "-";
-		ao12.innerHTML = "-";
-		ao100.innerHTML = "-";
-		range.innerHTML = "-";
-	} else {
+	best.innerHTML = "-";
+	avg.innerHTML = "-";
+	worst.innerHTML = "-";
+	ao5.innerHTML = "-";
+	ao12.innerHTML = "-";
+	ao100.innerHTML = "-";
+	range.innerHTML = "-";
+	if (sessions[currentSessionIdx].times != 0) {
 
 		// Best
 
-		best.innerHTML = format(Array.min(sessions[currentSessionIdx].times));
+		best.innerHTML = format(Math.min(...times.filter(e => !isNaN(parseInt(e)))) == Infinity ? "DNF" : Math.min(...times.filter(e => !isNaN(parseInt(e)))));
 
 		// Avg
 
 		var total = 0;
 		var avgTemp = 0;
-		for (i = 0; i < sessions[currentSessionIdx].times.length; i++) {
-			total += parseInt(sessions[currentSessionIdx].times[i]);
+		var len = 0;
+		for (let time of sessions[currentSessionIdx].times) {
+			if (!isNaN(parseInt(time))) {
+				total += parseInt(time);
+				len++;
+			}
 		}
-		avgTemp = Math.round(total / sessions[currentSessionIdx].times.length);
-
-		avg.innerHTML = format(avgTemp);
+		if (!isNaN(Math.round(total / len))) avg.innerHTML = format(Math.round(total / len));
 
 		// Worst
 
-		worst.innerHTML = format(Math.max.apply(Math, sessions[currentSessionIdx].times))
+		// worst.innerHTML = format(Math.max.apply(Math, sessions[currentSessionIdx].times))
+		worst.innerHTML = format(Math.max(...times.filter(e => !isNaN(parseInt(e)))) == -Infinity ? "DNF" : Math.max(...times.filter(e => !isNaN(parseInt(e)))));
 
 		// Range
-
-		if (sessions[currentSessionIdx].times.length >= 2) {
-			var temp = sessions[currentSessionIdx].times;
-
-			avgTemp = Math.max.apply(Math, temp) - Array.min(temp);
-
-			range.innerHTML = format(avgTemp);
-		} else {
-			ao5.innerHTML = "-";
-			ao12.innerHTML = "-";
-			ao100.innerHTML = "-";
-			range.innerHTML = "-";
-		}
+		if (sessions[currentSessionIdx].times.length > 1) range.innerHTML = format(Math.round(parseFloat(worst.innerHTML) * 100 - parseFloat(best.innerHTML) * 100));
 
 		// ao5
-
-		if (sessions[currentSessionIdx].times.length >= 5) {
-			// var temp = sessions[currentSessionIdx].times.sort(function (a, b) {
-			//     return a - b
-			// });
-
-			// var total = 0;
-			// var avgTemp = 0;
-			// for (i = 0; i < 5; i++) {
-			//     total += parseInt(temp[i]);
-			// }
-
-			// total -= Array.min(temp);
-			// total -= Array.max(temp);
-			// avgTemp = Math.round(total / 3);
-
-			// ao5.innerHTML = format(avgTemp);
-
-			var temp = sessions[currentSessionIdx].times;
-
-			var duTemp = temp.slice(0, 5);
-			console.log(duTemp)
-
-			var total = 0;
-			var avgTemp = 0;
-			for (i = 0; i < 5; i++) {
-				total += parseInt(duTemp[i]);
-			}
-
-			total -= Array.min(duTemp);
-			total -= Array.max(duTemp);
-			avgTemp = Math.round(total / 3);
-
-			ao5.innerHTML = format(avgTemp);
-		} else {
-			ao5.innerHTML = "-";
-			ao12.innerHTML = "-";
-			ao100.innerHTML = "-";
-		}
+		average = ao(5);
+		if (average) ao5.innerHTML = format(average);
 
 		// ao12
-
-		if (sessions[currentSessionIdx].times.length >= 12) {
-			var temp = sessions[currentSessionIdx].times;
-
-			var duTemp = temp.slice(0, 12);
-			console.log(duTemp)
-
-			var total = 0;
-			var avgTemp = 0;
-			for (i = 0; i < 12; i++) {
-				total += parseInt(duTemp[i]);
-			}
-
-			total -= Array.min(duTemp);
-			total -= Array.max(duTemp);
-			avgTemp = Math.round(total / 10);
-
-			ao12.innerHTML = format(avgTemp);
-		} else {
-			ao12.innerHTML = "-";
-			ao100.innerHTML = "-";
-		}
+		average = ao(12);
+		if (average) ao12.innerHTML = format(average);
 
 		// ao100
-
-		if (sessions[currentSessionIdx].times.length >= 100) {
-			var temp = sessions[currentSessionIdx].times;
-
-			var duTemp = temp.slice(0, 100);
-			console.log(duTemp)
-
-			var total = 0;
-			var avgTemp = 0;
-			for (i = 0; i < 100; i++) {
-				total += parseInt(duTemp[i]);
-			}
-
-			total -= parseInt(duTemp[0]) + parseInt(duTemp[1]) + parseInt(duTemp[2]) + parseInt(duTemp[3]) + parseInt(duTemp[4]);
-			total -= parseInt(duTemp[99]) + parseInt(duTemp[98]) + parseInt(duTemp[97]) + parseInt(duTemp[96]) + parseInt(duTemp[95]);
-			avgTemp = Math.round(total / 90);
-
-			ao100.innerHTML = format(avgTemp);
-		} else {
-			ao100.innerHTML = "-";
-		}
+		average = ao(100);
+		if (average) ao100.innerHTML = format(average);
 	}
 }
 
 function ao(number) {
-
 	if (sessions[currentSessionIdx].times.length >= number) {
 		var ignore = Math.ceil(number * 0.05);
 		var times = sessions[currentSessionIdx].times.slice(0, number);
 		times.sort((a, b) => {
-			if (isNaN(parseInt(a))) {
-				return Infinity;
-			}
-			if (isNaN(parseInt(b))) {
-				return -Infinity;
-			}
+			if (isNaN(parseInt(a))) return Infinity;
+			if (isNaN(parseInt(b))) return -Infinity;
 			return a - b;
 		});
 		times = times.slice(ignore, times.length - ignore);
 
-		if (times.includes("DNF")) {
-			return "DNF"
-		}
+		if (times.includes("DNF")) return "DNF";
 
 		var total = 0;
-		for (let time of times) {
-			total += parseInt(time);
-		}
+		for (let time of times) { total += parseInt(time) }
 		return Math.round(total / (number - 2 * ignore));
-	} else {
-		return false;
 	}
+	return false;
 }
 
 function deleteSolve() {
 	if (confirm('Are You Sure You Want To Delete This Solve?')) {
-		var uppParent1 = this.parentElement;
-		var uppParent2 = uppParent1.parentElement;
 
-		var idx = parseInt(uppParent2.id);
-		idx = sessions[currentSessionIdx].times.length - idx - 1;
-		sessions[currentSessionIdx].times.splice(idx, 1);
+		sessions[currentSessionIdx].times.splice(sessions[currentSessionIdx].times.length - parseInt(this.parentElement ?.parentElement.id ?? document.querySelector(".solves").childNodes[0].id) - 1, 1);
 
 		localStorage.setItem("speedtimer", JSON.stringify(sessions));
 

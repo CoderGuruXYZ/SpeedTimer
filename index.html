@@ -50,9 +50,9 @@
 		</div>
 		<div class="lastPart">
 			<div>
-				<a class="discord" href="https://discord.gg/pnuBXU8Sgg" target="_blank">
+				<!-- <a class="discord" href="https://discord.gg/pnuBXU8Sgg" target="_blank">
 					<i class="fab fa-discord" style="color: rgb(88 101 242);"></i>
-				</a>
+				</a> -->
 				<button class="credits" onclick="credits()" id="info">?</button>
 			</div>
 			<button class="collapse" onclick="collapse()"><i id="col" class="fas fa-angle-left"></i></button>
@@ -66,6 +66,7 @@
 		<div class="stopwatch">
 			<div class="sHold">
 				<div class="scramble"></div>
+				<!-- <div class="type">⌨️</div> -->
 				<div class="scrambleType">
 					<select class="scrambleDrop">
 						<option value="2x2">2x2</option>
@@ -83,7 +84,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="digits">00:00.00</div>
+			<button disabled="disabled" class="digits">00:00.00</button>
 		</div>
 		<div class="info">
 			<div class="solves">
@@ -121,6 +122,7 @@
 		</div>
 	</div>
 	<script src="script.js" async defer></script>
+	<script src="defaults.js" async defer></script>
 	<script src="collapse.js" async defer></script>
 	<script src="scrambles.js" async defer></script>
 

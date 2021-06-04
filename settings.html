@@ -7,6 +7,7 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="settings.css">
 	<link rel="icon" href="logo1.jpg">
 	<!-- This link -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
@@ -47,9 +48,9 @@
 		</div>
 		<div class="lastPart">
 			<div>
-				<a class="discord" href="https://discord.gg/pnuBXU8Sgg" target="_blank">
+				<!-- <a class="discord" href="https://discord.gg/pnuBXU8Sgg" target="_blank">
 					<i class="fab fa-discord" style="color: rgb(88 101 242);"></i>
-				</a>
+				</a> -->
 				<button class="credits" onclick="credits()" id="info">?</button>
 			</div>
 			<button class="collapse" onclick="collapse()"><i id="col" class="fas fa-angle-left"></i></button>
@@ -65,18 +66,58 @@
 		</div>
 
 		<div class="settings">
-            <div class="setting">
-                <div class="cap">Background Image:</div>
-                <div class="set">
+			<div class="setting">
+				<div class="cap">Background Image:</div>
+				<div class="set">
 					<div class="bgImg">
 						<div>
-					<input type='text' id='getval' placeholder="Type URL of image here..."/ style="color: grey"><br/><br/>
-					<p style = "color: smokewhite; font-size: 10px;">Go to an Image on Your Browser, <br> Right Click, and get Image Address</p></div>
-					<button>Default</button>
-			</div></div></div>
-            </div>
-            <div class="setting">
-        </div>
+							<input type='text' class="inputSet" id='getval'
+								placeholder="Type URL of image here..."><br><br>
+							<p style = "font-size: 1.5vh;">Go to an Image on Your Browser, <br> Right Click, and get Image Address, <br> Then paste
+								it here.</p>
+						</div>
+						<button class="btnset" id="imgbtnset">Default</button>
+					</div>
+				</div>
+			</div>
+			<div class="setting">
+				<div class="cap">Timer Font Size:
+				</div>
+				<div class="set">
+					<input id="timerSize" class="inputSet" type="range" value="15" min="1" max="50">
+				</div>
+			</div>
+			<div class="setting">
+				<div class="cap">Button Colour:
+				</div>
+				<div class="set">
+					<!-- <button class = "btnset" id = "clrAllSolves">Delete All Solves</button> -->
+					<input class="inputSet" id="colorPicker" type="color" value="#ff0000">
+				</div>
+			</div>
+			<div class="setting">
+				<div class="cap">Delete All Solves:
+				</div>
+				<div class="set">
+					<button class="btnset" id="clrAllSolves">Delete All Solves</button>
+				</div>
+			</div>
+			<div class="setting">
+				<div class="cap">Reset All Settings:
+				</div>
+				<div class="set">
+					<button class="btnset" id="clrAllSettings">Reset Settings</button>
+				</div>
+			</div>
+			<div class="setting">
+				<div class="cap">Delete All Data:
+				</div>
+				<div class="set">
+					<button class="btnset" id="clrAll">Delete All Data</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	</div>
 
 	<script src="settings.js" async defer></script>

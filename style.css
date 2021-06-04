@@ -13,7 +13,7 @@ body {
 
     /* Variables */
 
-    --white: whitesmoke;
+    --font-colour: whitesmoke;
     --black: #151515;
     --midBlack: #222;
     --lightBlack: rgb(24, 24, 24);
@@ -22,6 +22,7 @@ body {
     --animDuration: 0s;
 		--bradiusSmall: 5px;
 		--bradius: 10px;
+		--border: 2px solid rgb(21 21 21);
 }
 
 /* Navbar */
@@ -35,7 +36,7 @@ body {
     flex-direction: column;
 
     background-color: var(--black);
-    color: var(--white);
+    color: var(--font-colour);
     max-width: 250px;
     transition: width ease var(--animDuration);
 }
@@ -76,7 +77,7 @@ body {
 }
 
 .link.active {
-    color: var(--white);
+    color: var(--font-colour);
 }
 
 .link {
@@ -132,7 +133,7 @@ body {
     font-size: 18px;
     border: none;
     text-decoration: none;
-    color: var(--white);
+    color: var(--font-colour);
     background-color: var(--buttonbg);
     width: 40px;
     height: 40px;
@@ -151,7 +152,7 @@ body {
     font-size: 18px;
     border: none;
     text-decoration: none;
-    color: var(--white);
+    color: var(--font-colour);
     background-color: var(--buttonbg);
     cursor: pointer;
     padding: 0;
@@ -199,7 +200,7 @@ body {
     width: 75%;
     height: 90%;
     background-color: var(--lightBlack);
-    color: var(--white);
+    color: var(--font-colour);
     border-radius: var(--bradius);
     text-align: center;
     padding: 30px;
@@ -220,16 +221,31 @@ body {
     display: inline-block;
 }
 
-.digits {
+button.digits {
+		background: transparent;
+		border: none;
+		width: 100%;
     height: 50%;
 
-    color: var(--white);
-    font-size: 100px;
+    color: var(--font-colour);
 
     display: flex;
     justify-content: space-around;
     align-items: center;
 		cursor: default;
+}
+
+input.digits {
+		margin: auto;
+		color: var(--font-colour);
+		border: var(--border);
+		width: 30%;
+    height: 30%;
+		font-size: 80px;
+		text-align: center;
+    display: flex;
+		border-radius: var(--bradius);
+		background: var(--buttonbg);
 }
 
 .digits::-moz-selection {
@@ -251,18 +267,31 @@ body {
     top: 5vh;
     width: 100%;
 
-    color: var(--white);
+    color: var(--font-colour);
 
     text-align: center;
 }
 
 .set p
 {
-	color: var(--white);
+	color: var(--font-colour);
+}
+
+.type {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 150px;
+    background: var(--buttonbg);
+    border: var(--border);
+    color: var(--font-colour);
+    padding: 2px 8px;
+    border-radius: 10px;
+		cursor: pointer;
 }
 
 .scrambleType {
-    width: 7%;
+    width: 80px;
 
     position: absolute;
     top: 10px;
@@ -273,9 +302,9 @@ body {
     width: 80px;
     min-width: 80px;
 
-    border: 2px solid #151515;
-    color: var(--white);
-    background-color: #333;
+    border: var(--border);
+    color: var(--font-colour);
+    background-color: var(--buttonbg);
 
     padding: 3px;
 
@@ -350,7 +379,7 @@ body {
 }
 
 .time {
-    color: var(--white);
+    color: var(--font-colour);
 }
 
 .icons {
@@ -428,7 +457,7 @@ body {
 }
 
 .bestCaption {
-    color: var(--white);
+    color: var(--font-colour);
     font-weight: bold;
 }
 
@@ -468,7 +497,7 @@ body {
 }
 
 .caption {
-    color: var(--white);
+    color: var(--font-colour);
     font-weight: bold;
 }
 
@@ -505,7 +534,7 @@ body {
     height: 15%;
 
     text-align: center;
-    color: var(--white);
+    color: var(--font-colour);
 
     font-size: 8vh;
 
@@ -553,7 +582,7 @@ body {
     font-size: 15px;
     font-weight: 500;
 
-    color: var(--white);
+    color: var(--font-colour);
 
     outline: none;
 
@@ -592,7 +621,7 @@ body {
     font-size: 15px;
     font-weight: 500;
 
-    color: var(--white);
+    color: var(--font-colour);
 
     outline: none;
 }
@@ -636,6 +665,8 @@ body {
 .img {
 	width: 60%;
 
+	margin-bottom: 25px;
+
     margin-left: 25px;
     margin-right: 25px;
 
@@ -645,7 +676,7 @@ body {
 }
 
 .algText {
-    color: var(--white);
+    color: var(--font-colour);
 
     font-size: 90%;
     height: 80px;
@@ -681,7 +712,7 @@ body {
     margin-left: 25px;
 
     background-color: #222;
-    color: var(--white);
+    color: var(--font-colour);
 
     display: flex;
     justify-content: space-around;
@@ -701,7 +732,7 @@ body {
     width: 90%;
 
     background-color: #222;
-    color: var(--white);
+    color: var(--font-colour);
 
     display: flex;
     justify-content: space-around;
@@ -721,7 +752,7 @@ body {
     width: 90%;
 
     background-color: #222;
-    color: var(--white);
+    color: var(--font-colour);
 
     display: flex;
     justify-content: space-around;
@@ -752,7 +783,7 @@ body {
 
    font-size: 100%;
 
-    color: var(--white);
+    color: var(--font-colour);
 
     outline: none;
 
@@ -760,7 +791,7 @@ body {
 }
 
 .name {
-    font-size: 50px;
+    font-size: 8vh;
 
     width: 98%;
 
@@ -768,12 +799,10 @@ body {
     justify-content: space-between;
     align-items: center;
 
-    color: var(--white);
+    color: var(--font-colour);
 
     margin: 15px;
     padding: 15px;
-
-    border-bottom: 3px solid var(--blue);
 }
 
 .name a {
@@ -781,7 +810,7 @@ body {
 
     text-decoration: none;
 
-    color: var(--white);
+    color: var(--font-colour);
 
     background-color: var(--blue);
 
@@ -797,14 +826,16 @@ body {
 
 .settings {
     width: 100%;
-    height: 100%;
+    height: min-content;
 
     display: inline-block;
+
+    overflow-y: scroll;
 }
 
 .setting {
     width: 97%;
-    height: 100px;
+    height: 15vh;
 
     margin-left: auto;
     margin-right: auto;
@@ -817,8 +848,8 @@ body {
 }
 
 .cap {
-    font-size: 30px;
-    color: var(--white);
+    font-size: 4vh;
+    color: var(--font-colour);
 
     padding: 20px;
 }
@@ -865,7 +896,7 @@ body {
 
 .soz {
     font-size: 50px;
-    color: var(--white);
+    color: var(--font-colour);
     text-align: center;
     margin: 15%;
     font-weight: 300;
@@ -878,16 +909,9 @@ body {
     .collapse {
         display: none;
     }
-
-    .digits {
-        font-size: 80px;
-    }
 }
 
 @media screen and (max-width: 650px) {
-    .digits {
-        font-size: 12vw;
-    }
 
     .timerStats {
         flex-wrap: nowrap;
@@ -908,7 +932,9 @@ body {
 }
 
 .bgimg button {
-	height: 20px;
+	/* height: 30px; */
+	margin-top: 30px;
+	margin-bottom: 30px;
 	margin-left: 50px;
 }
 
@@ -919,7 +945,7 @@ body {
 	background-color: #181818;
 	border-radius: var(--bradius);
 	border: dashed 2px grey;
-	color: var(--white);
+	color: var(--font-colour);
 	cursor: pointer;
 }
 

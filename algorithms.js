@@ -1,7 +1,8 @@
 //var ollBtn = document.getElementById("oll");
 var pllBtn = document.getElementById("pll");
 
-var version = "0.0.2";
+var version = "0.0.1";
+localStorage.setItem("algVersion", version);
 
 // if (localStorage.getItem("version") == null) {
 //     localStorage.setItem("version", JSON.stringify(version));

@@ -32,7 +32,7 @@ function generateTimes() {
 		index.classList.add("index");
 		index.innerHTML = (sessions[currentSessionIdx].times.length - i).toString() + ".&nbsp;";
 
-		var time = document.createElement("div");
+		let time = document.createElement("div");
 		time.classList.add("time");
 		if (sessions[currentSessionIdx].times[i].slice(-1) == "+") {
 			time.style.color = plus2col;
@@ -68,9 +68,8 @@ function generateTimes() {
 
 		container.appendChild(solveBar);
 	}
-
-	loadInfo();
 }
+
 
 function generateStats() {
 	var best = document.querySelector(".bestTime");
@@ -89,139 +88,63 @@ function generateStats() {
 		return Math.max.apply(Math, array);
 	};
 
+	times = [];
+	for (time of sessions[currentSessionIdx].times) {
+		if (time.includes("DNF")) times.push("DNF");
+		else times.push(time.replace("+", ""));
+	}
+
 	//Default
 
-	if (sessions[currentSessionIdx].times.length == 0) {
-		best.innerHTML = "-";
-		avg.innerHTML = "-";
-		worst.innerHTML = "-";
-		ao5.innerHTML = "-";
-		ao12.innerHTML = "-";
-		ao100.innerHTML = "-";
-		range.innerHTML = "-";
-	} else {
+	best.innerHTML = "-";
+	avg.innerHTML = "-";
+	worst.innerHTML = "-";
+	ao5.innerHTML = "-";
+	ao12.innerHTML = "-";
+	ao100.innerHTML = "-";
+	range.innerHTML = "-";
+	if (sessions[currentSessionIdx].times != 0) {
 
 		// Best
 
-		best.innerHTML = format(Array.min(sessions[currentSessionIdx].times));
+		best.innerHTML = format(Math.min(...times.filter(e => !isNaN(parseInt(e)))) == Infinity ? "DNF" : Math.min(...times.filter(e => !isNaN(parseInt(e)))));
 
 		// Avg
 
 		var total = 0;
 		var avgTemp = 0;
-		for (i = 0; i < sessions[currentSessionIdx].times.length; i++) {
-			total += parseInt(sessions[currentSessionIdx].times[i]);
+		var len = 0;
+		for (let time of sessions[currentSessionIdx].times) {
+			if (!isNaN(parseInt(time))) {
+				total += parseInt(time);
+				len++;
+			}
 		}
-		avgTemp = Math.round(total / sessions[currentSessionIdx].times.length);
-
-		avg.innerHTML = format(avgTemp);
+		if (!isNaN(Math.round(total / len))) avg.innerHTML = format(Math.round(total / len));
 
 		// Worst
 
-		worst.innerHTML = format(Math.max.apply(Math, sessions[currentSessionIdx].times))
+		// worst.innerHTML = format(Math.max.apply(Math, sessions[currentSessionIdx].times))
+		worst.innerHTML = format(Math.max(...times.filter(e => !isNaN(parseInt(e)))) == -Infinity ? "DNF" : Math.max(...times.filter(e => !isNaN(parseInt(e)))));
 
 		// Range
 
-		if (sessions[currentSessionIdx].times.length >= 2) {
-			var temp = sessions[currentSessionIdx].times;
-
-			avgTemp = Math.max.apply(Math, temp) - Array.min(temp);
-
-			range.innerHTML = format(avgTemp);
-		} else {
-			ao5.innerHTML = "-";
-			ao12.innerHTML = "-";
-			ao100.innerHTML = "-";
-			range.innerHTML = "-";
-		}
+		if (sessions[currentSessionIdx].times.length > 1) range.innerHTML = format(Math.round(parseFloat(worst.innerHTML) * 100 - parseFloat(best.innerHTML) * 100));
 
 		// ao5
 
-		if (sessions[currentSessionIdx].times.length >= 5) {
-			// var temp = sessions[currentSessionIdx].times.sort(function (a, b) {
-			//     return a - b
-			// });
-
-			// var total = 0;
-			// var avgTemp = 0;
-			// for (i = 0; i < 5; i++) {
-			//     total += parseInt(temp[i]);
-			// }
-
-			// total -= Array.min(temp);
-			// total -= Array.max(temp);
-			// avgTemp = Math.round(total / 3);
-
-			// ao5.innerHTML = format(avgTemp);
-
-			var temp = sessions[currentSessionIdx].times;
-
-			var duTemp = temp.slice(0, 5);
-			console.log(duTemp)
-
-			var total = 0;
-			var avgTemp = 0;
-			for (i = 0; i < 5; i++) {
-				total += parseInt(duTemp[i]);
-			}
-
-			total -= Array.min(duTemp);
-			total -= Array.max(duTemp);
-			avgTemp = Math.round(total / 3);
-
-			ao5.innerHTML = format(avgTemp);
-		} else {
-			ao5.innerHTML = "-";
-			ao12.innerHTML = "-";
-			ao100.innerHTML = "-";
-		}
+		average = ao(5);
+		if (average) ao5.innerHTML = format(average);
 
 		// ao12
 
-		if (sessions[currentSessionIdx].times.length >= 12) {
-			var temp = sessions[currentSessionIdx].times;
-
-			var duTemp = temp.slice(0, 12);
-			console.log(duTemp)
-
-			var total = 0;
-			var avgTemp = 0;
-			for (i = 0; i < 12; i++) {
-				total += parseInt(duTemp[i]);
-			}
-
-			total -= Array.min(duTemp);
-			total -= Array.max(duTemp);
-			avgTemp = Math.round(total / 10);
-
-			ao12.innerHTML = format(avgTemp);
-		} else {
-			ao12.innerHTML = "-";
-			ao100.innerHTML = "-";
-		}
+		average = ao(12);
+		if (average) ao12.innerHTML = format(average);
 
 		// ao100
 
-		if (sessions[currentSessionIdx].times.length >= 100) {
-			var temp = sessions[currentSessionIdx].times;
-
-			var duTemp = temp.slice(0, 100);
-			console.log(duTemp)
-
-			var total = 0;
-			var avgTemp = 0;
-			for (i = 0; i < 100; i++) {
-				total += parseInt(duTemp[i]);
-			}
-
-			total -= parseInt(duTemp[0]) + parseInt(duTemp[1]) + parseInt(duTemp[2]) + parseInt(duTemp[3]) + parseInt(duTemp[4]);
-			total -= parseInt(duTemp[99]) + parseInt(duTemp[98]) + parseInt(duTemp[97]) + parseInt(duTemp[96]) + parseInt(duTemp[95]);
-			avgTemp = Math.round(total / 90);
-
-			ao100.innerHTML = format(avgTemp);
-		} else {
-			ao100.innerHTML = "-";
-		}
+		average = ao(100);
+		if (average) ao100.innerHTML = format(average);
 	}
 }
 
@@ -428,4 +351,24 @@ function setCur()
 
 	generateSessions();
 	loadInfo();
+}
+
+function ao(number) {
+	if (sessions[currentSessionIdx].times.length >= number) {
+		var ignore = Math.ceil(number * 0.05);
+		var times = sessions[currentSessionIdx].times.slice(0, number);
+		times.sort((a, b) => {
+			if (isNaN(parseInt(a))) return Infinity;
+			if (isNaN(parseInt(b))) return -Infinity;
+			return a - b;
+		});
+		times = times.slice(ignore, times.length - ignore);
+
+		if (times.includes("DNF")) return "DNF";
+
+		var total = 0;
+		for (let time of times) { total += parseInt(time) }
+		return Math.round(total / (number - 2 * ignore));
+	}
+	return false;
 }
